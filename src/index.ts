@@ -1,9 +1,16 @@
 /* eslint-disable no-console */
+<<<<<<< HEAD
 import twilio from 'twilio';
+=======
+>>>>>>> ec61ac7... uncommented twilio references
 import express from 'express';
 import MessagingResponse from 'twilio/lib/twiml/MessagingResponse';
 import * as env from 'env-var';
+<<<<<<< HEAD
 import messages from './messages/messages.json';
+=======
+import Twilio from 'twilio';
+>>>>>>> ec61ac7... uncommented twilio references
 
 require('dotenv').config();
 
