@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
-// const twilio = require('twilio');
+import twilio from 'twilio';
 import express from 'express';
-import bodyParser from 'body-parser';
 import MessagingResponse from 'twilio/lib/twiml/MessagingResponse';
 import * as env from 'env-var';
+import messages from './messages/messages.json';
 
 require('dotenv').config();
 
@@ -16,9 +16,9 @@ console.log(
 
 // express app
 const app = express();
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(
-  bodyParser.urlencoded({
+  express.urlencoded({
     extended: true,
   }),
 );
@@ -38,18 +38,24 @@ app.listen(expressServerPort, () => {
   console.log(`Listening at http://localhost:${expressServerPort}/`);
 });
 
-// const numbers = {
-//   twilio: `+${process.env.TWILIO_TEST_NUMBER}`,
-//   andrew: `+${process.env.ANDREW_CELL_NUMBER}`,
-// };
+const numbers = {
+  twilio: `+${process.env.TWILIO_TEST_NUMBER}`,
+  andrew: `+${process.env.ANDREW_CELL_NUMBER}`,
+};
 
-// // create a message -- commented out in order not waste money during testing
-// const twilioClient = new twilio(process.env.TWILIO_ACCOUNT_SID,
-//   process.env.TWILIO_AUTH_TOKEN);
-// twilioClient.messages.create({
-//   to: numbers.andrew,
-//   from: numbers.twilio,
-//   body: 'Hello! Hope you’re having a good day!',
-// }, (err, data) => {
-//   console.log('ERROR:', { err, data });
-// });
+// create a message -- commented out in order not waste money during testing
+// eslint-disable-next-line new-cap
+const twilioClient = twilio(
+  process.env.TWILIO_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_TOKEN,
+);
+twilioClient.messages.create(
+  {
+    to: numbers.andrew,
+    from: numbers.twilio,
+    body: messages.greeting,
+  },
+  (err, data) => {
+    console.log('ERROR:', { err, data });
+  },
+);
