@@ -48,6 +48,7 @@ app.listen(expressServerPort, () => {
 const numbers = {
   twilio: `+${process.env.TWILIO_TEST_NUMBER}`,
   andrew: `+${process.env.ANDREW_CELL_NUMBER}`,
+  magic: '+15005550006',
 };
 
 // create a message -- commented out in order not waste money during testing
