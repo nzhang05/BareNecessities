@@ -1,16 +1,9 @@
 /* eslint-disable no-console */
-<<<<<<< HEAD
 import twilio from 'twilio';
-=======
->>>>>>> ec61ac7... uncommented twilio references
 import express from 'express';
 import MessagingResponse from 'twilio/lib/twiml/MessagingResponse';
 import * as env from 'env-var';
-<<<<<<< HEAD
 import messages from './messages/messages.json';
-=======
-import Twilio from 'twilio';
->>>>>>> ec61ac7... uncommented twilio references
 
 require('dotenv').config();
 
@@ -32,12 +25,27 @@ app.use(
 
 // express endpoints
 app.post('/message', (_req, res) => {
-  const resp = new MessagingResponse();
-  resp.message('Thanks for subscribing!');
+  const twiml = new MessagingResponse();
+
+  if (_req.body.Body === 'Start') {
+    twiml.message('Welcome to Bare Necessities! \
+                  Are you a vendor or a buyer? \
+                  REPLY 1 (ONE) for vendor REPLY 2 (TWO) for buyer \
+                  Text STOP if you would like to quit using the service.');
+  } else if (_req.body.Body === '2' || _req.body.Body === 'TWO') {
+    twiml.message('Text your zipcode so that we can select vendors \
+                  based on your location or STOP if \
+                  you would like to quit using the service.');
+  } else {
+    twiml.message(
+      'No Body param match, Twilio sends this in the request to your server.',
+    );
+  }
+
   res.writeHead(200, {
     'Content-Type': 'text/xml',
   });
-  res.end(resp.toString());
+  res.end(twiml.toString());
 });
 
 // express server
