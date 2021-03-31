@@ -15,7 +15,7 @@
         "@typescript-eslint"
     ],
     "rules": {
-        "max-len": ["error", 80, 2, {
+        "max-len": ["warn", 80, 2, {
             "ignoreUrls": true,
             "ignoreComments": false,
             "ignoreRegExpLiterals": true,
