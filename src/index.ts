@@ -2,7 +2,7 @@
 import express from 'express';
 import MessagingResponse from 'twilio/lib/twiml/MessagingResponse';
 import * as env from 'env-var';
-import { getStoreProducts } from './firebase.ts';
+import { getStoreProducts } from './firebase';
 
 require('dotenv').config();
 
