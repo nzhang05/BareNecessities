@@ -53,13 +53,14 @@ export const authenticateUser = async (email: string, password: string) => {
       error = false;
       return false;
     });
-  firebase.auth()
-    .setPersistence(firebase.auth.Auth.Persistence.NONE);
+  firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
   return error && success;
 };
 
 export const signOutUser = () => firebase.auth().signOut();
 
-export const getStoreProducts = async (storeName: string) => adminDb.ref(`Stores/${storeName}/Products`)
-  .once('value')
-  .then((snapshot) => snapshot.val());
+export const getStoreProducts = async (storeName: string) =>
+  adminDb
+    .ref(`Stores/${storeName}/Products`)
+    .once('value')
+    .then((snapshot) => snapshot.val());
