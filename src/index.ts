@@ -28,14 +28,18 @@ app.post('/message', (_req, res) => {
   const twiml = new MessagingResponse();
 
   if (_req.body.Body === 'Start') {
-    twiml.message('Welcome to Bare Necessities! \
+    twiml.message(
+      'Welcome to Bare Necessities! \
                   Are you a vendor or a buyer? \
                   REPLY 1 (ONE) for vendor REPLY 2 (TWO) for buyer \
-                  Text STOP if you would like to quit using the service.');
+                  Text STOP if you would like to quit using the service.',
+    );
   } else if (_req.body.Body === '2' || _req.body.Body === 'TWO') {
-    twiml.message('Text your zipcode so that we can select vendors \
+    twiml.message(
+      'Text your zipcode so that we can select vendors \
                   based on your location or STOP if \
-                  you would like to quit using the service.');
+                  you would like to quit using the service.',
+    );
   } else {
     twiml.message(
       'No Body param match, Twilio sends this in the request to your server.',
