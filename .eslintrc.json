@@ -21,6 +21,7 @@
             "ignoreRegExpLiterals": true,
             "ignoreStrings": false,
             "ignoreTemplateLiterals": false
-        }]    
+        }],
+        "implicit-arrow-linebreak": "off"
     }
 }
