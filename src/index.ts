@@ -1,8 +1,10 @@
 /* eslint-disable no-console */
-import twilio from 'twilio';
+// import twilio from 'twilio';
 import express from 'express';
+import session from 'express-session';
 import MessagingResponse from 'twilio/lib/twiml/MessagingResponse';
 import * as env from 'env-var';
+import util from 'util';
 import messages from './messages/messages.json';
 
 require('dotenv').config();
@@ -23,24 +25,51 @@ app.use(
   }),
 );
 
-// express endpoints
-app.post('/message', (_req, res) => {
-  const twiml = new MessagingResponse();
+const sessionSecret = env.get('SESSION_SECRET').asString();
 
-  if (_req.body.Body === 'Start') {
-    twiml.message(messages.initResponse);
-  } else if (_req.body.Body === '2' || _req.body.Body === 'TWO') {
-    twiml.message(
-      'Text your zipcode so that we can select vendors \
-                  based on your location or STOP if \
-                  you would like to quit using the service.',
-    );
-  } else {
-    twiml.message(
-      'No Body param match, Twilio sends this in the request to your server.',
-    );
+if (sessionSecret) {
+  app.use(session({ secret: sessionSecret }));
+}
+
+declare module 'express-session' {
+  export interface Session {
+    counter: number;
+  }
+}
+
+// Create response mapping
+const responseMap: Map<string, string> = new Map<string, string>();
+responseMap.set('0,Start', messages.initResponse);
+responseMap.set('1,1', messages.checkExistingVendor);
+responseMap.set('1,ONE', messages.checkExistingVendor);
+responseMap.set('1,TWO', messages.isBuyerResponse);
+responseMap.set('1,2', messages.isBuyerResponse);
+// responseMap.set([2,""], messages.listProductsInstructions)
+
+// express endpoints
+app.post('/message', (req, res) => {
+  console.log(util.inspect(req, { depth: null }));
+  const smsCount = req.session.counter || 0;
+  let message: string | undefined = '';
+  console.log(`Body: ${req.body.Body}`);
+  try {
+    console.log(`SmsCount: ${smsCount} and reqBody: ${req.body.Body}`);
+    const origKey: [number, string] = [smsCount, req.body.Body];
+    const key = origKey.join(',');
+    message = responseMap.get(key);
+    console.log(`after get from map with message ${message}`);
+  } catch (err) {
+    console.log(err);
+    message = messages.unrecognizedResponse;
+    req.session.counter -= 1;
   }
 
+  req.session.counter = smsCount + 1;
+
+  const twiml = new MessagingResponse();
+  if (message) {
+    twiml.message(message);
+  }
   res.writeHead(200, {
     'Content-Type': 'text/xml',
   });
@@ -51,27 +80,3 @@ app.post('/message', (_req, res) => {
 app.listen(expressServerPort, () => {
   console.log(`Listening at http://localhost:${expressServerPort}/`);
 });
-
-const numbers = {
-  twilio: `+${process.env.TWILIO_TEST_NUMBER}`,
-  andrew: `+${process.env.ANDREW_CELL_NUMBER}`,
-  magic: '+15005550006',
-  keisha: `+${process.env.KEISHA_CELL_NUMBER}`,
-};
-
-// create a message -- commented out in order not waste money during testing
-// eslint-disable-next-line new-cap
-const twilioClient = twilio(
-  process.env.TWILIO_ACCOUNT_SID,
-  process.env.TWILIO_AUTH_TOKEN,
-);
-twilioClient.messages.create(
-  {
-    to: numbers.keisha,
-    from: numbers.twilio,
-    body: messages.initResponse,
-  },
-  (err, data) => {
-    console.log('ERROR:', { err, data });
-  },
-);

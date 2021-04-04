@@ -12,6 +12,7 @@ declare global {
       NOAH_CELL_NUMER: string;
       TWILIO_TEST_ACCOUNT_SID: string;
       TWILIO_TEST_AUTH_TOKEN: string;
+      SESSION_SECRET: string;
     }
   }
 }
