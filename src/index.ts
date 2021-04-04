@@ -28,12 +28,7 @@ app.post('/message', (_req, res) => {
   const twiml = new MessagingResponse();
 
   if (_req.body.Body === 'Start') {
-    twiml.message(
-      'Welcome to Bare Necessities! \
-                  Are you a vendor or a buyer? \
-                  REPLY 1 (ONE) for vendor REPLY 2 (TWO) for buyer \
-                  Text STOP if you would like to quit using the service.',
-    );
+    twiml.message(messages.initResponse);
   } else if (_req.body.Body === '2' || _req.body.Body === 'TWO') {
     twiml.message(
       'Text your zipcode so that we can select vendors \
@@ -61,6 +56,7 @@ const numbers = {
   twilio: `+${process.env.TWILIO_TEST_NUMBER}`,
   andrew: `+${process.env.ANDREW_CELL_NUMBER}`,
   magic: '+15005550006',
+  keisha: `+${process.env.KEISHA_CELL_NUMBER}`,
 };
 
 // create a message -- commented out in order not waste money during testing
@@ -71,9 +67,9 @@ const twilioClient = twilio(
 );
 twilioClient.messages.create(
   {
-    to: numbers.andrew,
+    to: numbers.keisha,
     from: numbers.twilio,
-    body: messages.greeting,
+    body: messages.initResponse,
   },
   (err, data) => {
     console.log('ERROR:', { err, data });
