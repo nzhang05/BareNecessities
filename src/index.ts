@@ -46,8 +46,8 @@ responseMap.set('1,TWO', messages.isBuyerResponse);
 responseMap.set('1,2', messages.isBuyerResponse);
 responseMap.set('2,02155', messages.listProductsInstructions);
 responseMap.set('3,Tomatoes', messages.listVendorsResponse);
-responseMap.set('4,ONE', messages.choseAndrewFarn);
-responseMap.set('5,stop', messages.stop);
+responseMap.set('4,1', messages.choseAndrewFarn);
+responseMap.set('5,STOP', messages.stop);
 
 // express endpoints
 app.post('/message', (req, res) => {
