@@ -76,6 +76,28 @@ app.post('/message', (req, res) => {
   res.writeHead(200, {
     'Content-Type': 'text/xml',
   });
+
+  //   const numbers = {
+  //   twilio: `+${process.env.TWILIO_TEST_NUMBER}`,
+  //   andrew: `+${process.env.ANDREW_CELL_NUMBER}`,
+  // };
+
+  // create a message -- commented out in order not waste money during testing
+  // eslint-disable-next-line new-cap
+  // const twilioClient = twilio(
+  //   process.env.TWILIO_ACCOUNT_SID,
+  //   process.env.TWILIO_AUTH_TOKEN,
+  // );
+  // twilioClient.messages.create(
+  //   {
+  //     to: numbers.andrew,
+  //     from: numbers.twilio,
+  //     body: message,
+  //   },
+  //   (err, data) => {
+  //     console.log('ERROR:', { err, data });
+  //   },
+  // );
   res.end(twiml.toString());
 });
 
