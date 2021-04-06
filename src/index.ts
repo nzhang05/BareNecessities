@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-// import twilio from 'twilio';
 import express from 'express';
 import session from 'express-session';
 import MessagingResponse from 'twilio/lib/twiml/MessagingResponse';
@@ -42,32 +41,43 @@ const responseMap: Map<string, string> = new Map<string, string>();
 responseMap.set('0,Start', messages.initResponse);
 responseMap.set('1,1', messages.checkExistingVendor);
 responseMap.set('1,ONE', messages.checkExistingVendor);
+
 responseMap.set('1,TWO', messages.isBuyerResponse);
 responseMap.set('1,2', messages.isBuyerResponse);
 responseMap.set('2,02155', messages.listProductsInstructions);
 responseMap.set('3,Tomatoes', messages.listVendorsResponse);
 responseMap.set('4,1', messages.choseAndrewFarn);
-responseMap.set('5,STOP', messages.stop);
+responseMap.set('1,EXIT', messages.stop);
+responseMap.set('2,EXIT', messages.stop);
+responseMap.set('3,EXIT', messages.stop);
+responseMap.set('4,EXIT', messages.stop);
+responseMap.set('5,EXIT', messages.stop);
 
 // express endpoints
 app.post('/message', (req, res) => {
   console.log(util.inspect(req, { depth: null }));
   const smsCount = req.session.counter || 0;
   let message: string | undefined = '';
+
   console.log(`Body: ${req.body.Body}`);
-  try {
-    console.log(`SmsCount: ${smsCount} and reqBody: ${req.body.Body}`);
-    const origKey: [number, string] = [smsCount, req.body.Body];
-    const key = origKey.join(',');
-    message = responseMap.get(key);
-    console.log(`after get from map with message ${message}`);
-  } catch (err) {
-    console.log(err);
+  console.log(`SmsCount: ${smsCount} and reqBody: ${req.body.Body}`);
+
+  const origKey: [number, string] = [smsCount, req.body.Body];
+  const key = origKey.join(',');
+  message = responseMap.get(key);
+  console.log(`after get from map with message ${message}`);
+
+  if (!message) {
+    console.log('Invalid message body');
     message = messages.unrecognizedResponse;
     req.session.counter -= 1;
   }
 
   req.session.counter = smsCount + 1;
+
+  if (req.body.Body === 'EXIT') {
+    req.session.counter = 0;
+  }
 
   const twiml = new MessagingResponse();
   if (message) {
@@ -76,28 +86,6 @@ app.post('/message', (req, res) => {
   res.writeHead(200, {
     'Content-Type': 'text/xml',
   });
-
-  //   const numbers = {
-  //   twilio: `+${process.env.TWILIO_TEST_NUMBER}`,
-  //   andrew: `+${process.env.ANDREW_CELL_NUMBER}`,
-  // };
-
-  // create a message -- commented out in order not waste money during testing
-  // eslint-disable-next-line new-cap
-  // const twilioClient = twilio(
-  //   process.env.TWILIO_ACCOUNT_SID,
-  //   process.env.TWILIO_AUTH_TOKEN,
-  // );
-  // twilioClient.messages.create(
-  //   {
-  //     to: numbers.andrew,
-  //     from: numbers.twilio,
-  //     body: message,
-  //   },
-  //   (err, data) => {
-  //     console.log('ERROR:', { err, data });
-  //   },
-  // );
   res.end(twiml.toString());
 });
 

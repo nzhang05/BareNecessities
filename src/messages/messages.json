@@ -1,16 +1,16 @@
 {
-    "initResponse": "Welcome to Bare Necessities! \n Are you a vendor or a buyer? \nREPLY 1 (ONE) for vendor \nREPLY 2 (TWO) for buyer \n Text STOP if you would like to quit using the service.",
-    "isBuyerResponse":"Text your zipcode so that we can select vendors based on your location or STOP if you would like to quit using the service.",
-    "listProductsInstructions":"Text a list of the goods you wish to purchase. For multiple goods, seperate each good on a new line. For Example:\nTomatoes\nPotatoes\nRice\nEggs\n\n We will then display to you the vendors whose inventory best matches your products. \n Text STOP if you would like to quit using the service.",
-    "vendorListResults":"Here are the results that best match your location and products\nREPLY with your selected vendors number to see more information. Text STOP if you would like to quit using the service.",
-    "vendorResultsInstructions":"REPLY 1 (ONE) if you wish to search a new product,\nREPLY 2 (TWO) to return back to the list of vendors\n Reply STOP if you would like to quit the service",
+    "initResponse": "Welcome to Bare Necessities! \n Are you a vendor or a buyer? \nREPLY 1 (ONE) for vendor \nREPLY 2 (TWO) for buyer \n Text EXIT if you would like to quit using the service.",
+    "isBuyerResponse":"Text your zipcode so that we can select vendors based on your location or EXIT if you would like to quit using the service.",
+    "listProductsInstructions":"Text a list of the goods you wish to purchase. For multiple goods, seperate each good on a new line. For Example:\nTomatoes\nPotatoes\nRice\nEggs\n\n We will then display to you the vendors whose inventory best matches your products. \n Text EXIT if you would like to quit using the service.",
+    "vendorListResults":"Here are the results that best match your location and products\nREPLY with your selected vendors number to see more information. Text EXIT if you would like to quit using the service.",
+    "vendorResultsInstructions":"REPLY 1 (ONE) if you wish to search a new product,\nREPLY 2 (TWO) to return back to the list of vendors\n Reply EXIT if you would like to quit the service",
     "stop":"Thank you for using Bare Necessities! We hope you enjoyed using our service.",
     "checkExistingVendor":"Are you an already registered user? \nREPLY YES (Y) if you are an already registered user\nREPLY NO if you are not an already registered user ", 
     "registerationName":"REPLY with you store, farm or vendor name.",
     "registerationContactInfo":"REPLY with your phone number, email address and store address. Please seperate each piece of contact information with a new line.\n For example:\n3013460387\naleogross@gmail.com\n141 George St\nMedford\nMA\nUSA\n02155",
     "showVendorDetails":"Here is the list of product information for your store:",
-    "showVendorOperations":"REPLY ADD and a new product name if you wish to add new product,\nREPLY DELETE and the product number indicating the product you wish to delete to delete a product from you inventory\n Reply STOP if you would like to quit the service",
+    "showVendorOperations":"REPLY ADD and a new product name if you wish to add new product,\nREPLY DELETE and the product number indicating the product you wish to delete to delete a product from you inventory\n Reply EXIT if you would like to quit the service",
     "unrecognizedResponse":"Unrecognized, Resend your response.",
-    "listVendorsResponse":"Here are the results that best match your location, products and product quantities.\n1. Andrew’s Farm, Medford MA\n2. Noah’s Farm, Sommerville MA\n3. Keisha’s WholeSale Goods, Framingham MA\n\nREPLY with the vendors number to see more information or STOP if you would like to quit the service",
-    "choseAndrewFarn":"Andrew’s Farm:\nTomatoes 100\nRed Onions 200\nPotatos 30 \nLeeks 20\nPeanuts 500\n\nContact Info\nPhone: 617-123-0000\nEmail: agrossfarm@gmail.com\nLocation: Farmville St, Medford, MA\n\nREPLY 1 if you wish to search a new product or STOP if you are done"
+    "listVendorsResponse":"Here are the results that best match your location, products and product quantities.\n1. Andrew’s Farm, Medford MA\n2. Noah’s Farm, Sommerville MA\n3. Keisha’s WholeSale Goods, Framingham MA\n\nREPLY with the vendors number to see more information or EXIT if you would like to quit the service",
+    "choseAndrewFarn":"Andrew’s Farm:\nTomatoes 100\nRed Onions 200\nPotatos 30 \nLeeks 20\nPeanuts 500\n\nContact Info\nPhone: 617-123-0000\nEmail: agrossfarm@gmail.com\nLocation: Farmville St, Medford, MA\n\nREPLY 1 if you wish to search a new product or EXIT if you are done"
 }
