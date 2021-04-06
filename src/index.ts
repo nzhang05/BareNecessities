@@ -47,11 +47,14 @@ responseMap.set('1,2', messages.isBuyerResponse);
 responseMap.set('2,02155', messages.listProductsInstructions);
 responseMap.set('3,Tomatoes', messages.listVendorsResponse);
 responseMap.set('4,1', messages.choseAndrewFarn);
+responseMap.set('0,EXIT', messages.stop);
 responseMap.set('1,EXIT', messages.stop);
 responseMap.set('2,EXIT', messages.stop);
 responseMap.set('3,EXIT', messages.stop);
 responseMap.set('4,EXIT', messages.stop);
 responseMap.set('5,EXIT', messages.stop);
+responseMap.set('6,EXIT', messages.stop);
+responseMap.set('7,EXIT', messages.stop);
 
 // express endpoints
 app.post('/message', (req, res) => {
