@@ -80,9 +80,5 @@ export const getStoreProducts = async (storeName: string) =>
 export const getVendorsWithProducts = async (product: string) =>
   getStoreNames().then((vendors: string[]) =>
     vendors.filter((vendor) =>
-      getStoreProducts(vendor).then((products) => {
-        if (product in products) {
-          return true;
-        }
-        return false;
-      })));
+      getStoreProducts(vendor).then((products) =>
+        product in products)));
