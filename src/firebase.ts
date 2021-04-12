@@ -59,8 +59,30 @@ export const authenticateUser = async (email: string, password: string) => {
 
 export const signOutUser = () => firebase.auth().signOut();
 
+export const getStoreNames = async () =>
+  adminDb
+    .ref('Stores')
+    .once('value')
+    .then((snapshot: any) => {
+      const names: string[] = [];
+      snapshot.forEach((snapshotChild: any) => {
+        names.push(snapshotChild.key);
+      });
+      return names;
+    });
+
 export const getStoreProducts = async (storeName: string) =>
   adminDb
     .ref(`Stores/${storeName}/Products`)
     .once('value')
-    .then((snapshot) => snapshot.val());
+    .then((snapshot: any) => snapshot.val());
+
+export const getVendorsWithProducts = async (product: string) =>
+  getStoreNames().then((vendors: string[]) =>
+    vendors.filter((vendor) =>
+      getStoreProducts(vendor).then((products) => {
+        if (product in products) {
+          return true;
+        }
+        return false;
+      })));
