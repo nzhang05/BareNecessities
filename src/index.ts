@@ -2,6 +2,7 @@
 import express from 'express';
 import MessagingResponse from 'twilio/lib/twiml/MessagingResponse';
 import * as env from 'env-var';
+import util from 'util';
 import { getStoreProducts, getVendorsWithProducts } from './firebase';
 
 require('dotenv').config();
@@ -39,10 +40,11 @@ app.listen(expressServerPort, () => {
 
 const storeName = 'KeishaFarm';
 getStoreProducts(storeName).then((products) => {
-  console.log(products);
+  console.log(`Does KeishaFarm have Bananas? \
+               Products: ${util.inspect(products)}`);
 });
 
 const product = 'Bananas';
 getVendorsWithProducts(product).then((vendors) => {
-  console.log(vendors);
+  console.log(`Who has bananas? KeishaFarm here? ${vendors}`);
 });
