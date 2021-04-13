@@ -77,8 +77,20 @@ export const getStoreProducts = async (storeName: string) =>
     .once('value')
     .then((snapshot: any) => snapshot.val());
 
+export const getStoreZip = async (storeName: string) =>
+  adminDb
+    .ref(`Stores/${storeName}/ContactInfo/Location/Zip`)
+    .once('value')
+    .then((snapshot: any) => snapshot.val());
+
 export const getVendorsWithProducts = async (product: string) =>
   getStoreNames().then((vendors: string[]) =>
     vendors.filter((vendor) =>
       getStoreProducts(vendor).then((products) =>
         product in products)));
+
+export const getVendorsByZip = async (zip: string) =>
+  getStoreNames().then((vendors: string[]) =>
+    vendors.filter((vendor) =>
+      getStoreZip(vendor).then((storeZip) =>
+        storeZip === zip)));
