@@ -4,8 +4,9 @@ import 'firebase/database';
 import * as admin from 'firebase-admin';
 import * as env from 'env-var';
 // eslint-disable-next-line no-multi-str
-import serviceAccount from '\
-./bare-necessities-60939-firebase-adminsdk-1vgof-20badddf68.json';
+import Location from './types/firebase';
+import serviceAccount from
+  './bare-necessities-60939-firebase-adminsdk-1vgof-20badddf68.json';
 
 // firebase client
 const firebaseConfig = {
@@ -77,6 +78,12 @@ export const getStoreProducts = async (storeName: string) =>
     .once('value')
     .then((snapshot: any) => snapshot.val());
 
+export const getStoreContactInfo = async (storeName: string) =>
+  adminDb
+    .ref(`Stores/${storeName}/ContactInfo`)
+    .once('value')
+    .then((snapshot: any) => snapshot.val());
+
 export const getStoreZip = async (storeName: string) =>
   adminDb
     .ref(`Stores/${storeName}/ContactInfo/Location/Zip`)
@@ -94,3 +101,23 @@ export const getVendorsByZip = async (zip: string) =>
     vendors.filter((vendor) =>
       getStoreZip(vendor).then((storeZip) =>
         storeZip === zip)));
+
+export const createStore = async (storeName: string, location: Location) => {
+  adminDb
+    .ref('Stores')
+    .push()
+    .set(storeName)
+    .then(() => {
+      const success = {
+        success: true,
+      };
+      return success;
+    })
+    .catch((error) => {
+      const success = {
+        success: false,
+        errorMessage: error.message,
+      };
+      return success;
+    });
+};
