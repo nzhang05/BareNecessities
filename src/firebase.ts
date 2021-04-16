@@ -102,6 +102,7 @@ export const getVendorsByZip = async (zip: string) =>
       getStoreZip(vendor).then((storeZip) =>
         storeZip === zip)));
 
+// eslint-disable-next-line no-unused-vars
 export const createStore = async (storeName: string, location: Location) => {
   adminDb
     .ref('Stores')
