@@ -3,8 +3,9 @@ import 'firebase/auth';
 import 'firebase/database';
 import * as admin from 'firebase-admin';
 import * as env from 'env-var';
-// eslint-disable-next-line no-multi-str
-import Location from './types/firebase';
+import {
+  StoreLocation, ContactInfo, Store,
+} from './types/firebase';
 import serviceAccount from
   './bare-necessities-60939-firebase-adminsdk-1vgof-20badddf68.json';
 
@@ -102,23 +103,47 @@ export const getVendorsByZip = async (zip: string) =>
       getStoreZip(vendor).then((storeZip) =>
         storeZip === zip)));
 
-// eslint-disable-next-line no-unused-vars
-export const createStore = async (storeName: string, location: Location) => {
-  adminDb
-    .ref('Stores')
-    .push()
-    .set(storeName)
-    .then(() => {
-      const success = {
-        success: true,
-      };
-      return success;
-    })
-    .catch((error) => {
-      const success = {
-        success: false,
-        errorMessage: error.message,
-      };
-      return success;
-    });
+export const createStoreLocation = (
+  streetAddress: string,
+  city: string,
+  state: string,
+  country: string,
+  zip: string,
+): StoreLocation => {
+  const storeLocation: StoreLocation = {
+    streetAddress,
+    city,
+    state,
+    zip,
+    country,
+  };
+  return storeLocation;
+};
+
+export const createContactInfo = (
+  location: StoreLocation,
+  phoneNumber: string,
+  email: string,
+): ContactInfo => {
+  const contactInfo: ContactInfo = {
+    location,
+    phoneNumber,
+    email,
+  };
+  return contactInfo;
+};
+
+export const createStore = async (
+  storeName: string,
+  contactInfo: ContactInfo,
+): Promise<boolean> => {
+  const store: Store = {
+    contactInfo,
+  };
+
+  return adminDb
+    .ref(`Stores/${storeName}`)
+    .set(store)
+    .then(() => true)
+    .catch(() => false);
 };

@@ -2,12 +2,7 @@
 import express from 'express';
 import MessagingResponse from 'twilio/lib/twiml/MessagingResponse';
 import * as env from 'env-var';
-import util from 'util';
-import {
-  getStoreProducts,
-  getVendorsWithProducts,
-  getVendorsByZip,
-} from './firebase';
+import * as firebaseLib from './firebase';
 
 require('dotenv').config();
 
@@ -42,18 +37,43 @@ app.listen(expressServerPort, () => {
   console.log(`Listening at http://localhost:${expressServerPort}/`);
 });
 
-const storeName = 'KeishaFarm';
-getStoreProducts(storeName).then((products) => {
-  console.log(`Does KeishaFarm have Bananas? \
-               Products: ${util.inspect(products)}`);
-});
+// const storeName = 'KeishaFarm';
+// firebaseLib.getStoreProducts(storeName).then((products) => {
+//   console.log(`Does KeishaFarm have Bananas? \
+//                Products: ${util.inspect(products)}`);
+// });
 
-const product = 'Bananas';
-getVendorsWithProducts(product).then((vendors) => {
-  console.log(`Who has bananas? KeishaFarm here? ${vendors}`);
-});
+// const product = 'Bananas';
+// firebaseLib.getVendorsWithProducts(product).then((vendors) => {
+//   console.log(`Who has bananas? KeishaFarm here? ${vendors}`);
+// });
 
+// const zip = '02155';
+// firebaseLib.getVendorsByZip(zip).then((vendors) => {
+//   console.log(`Who is in ${zip} area code? ${vendors}`);
+// });
+
+const streetAddress = '99 Medford Ave';
+const city = 'Medford';
+const state = 'MA';
+const country = 'USA';
 const zip = '02155';
-getVendorsByZip(zip).then((vendors) => {
-  console.log(`Who is in ${zip} area code? ${vendors}`);
+const testLocation = firebaseLib.createStoreLocation(
+  streetAddress, city, state, country, zip,
+);
+
+const phoneNumber = '1111111111';
+const email = '';
+const testContactInfo = firebaseLib.createContactInfo(
+  testLocation,
+  phoneNumber,
+  email,
+);
+
+firebaseLib.createStore('KeishaFarm', testContactInfo).then((success) => {
+  if (success) {
+    console.log('Successful');
+  } else {
+    console.log('Failed');
+  }
 });
