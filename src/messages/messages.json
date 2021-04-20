@@ -11,6 +11,7 @@
     "showVendorDetails": "\n Here is the list of product information for your store:",
     "showVendorOperations": "\n REPLY ADD and a new product name if you wish to add new product,\nREPLY DELETE and the product number indicating the product you wish to delete to delete a product from you inventory\n\nText EXIT if you would like to quit the service",
     "unrecognizedResponse": "\n We could not recognize your input either due to formatting or unrecognized user input. \nPlease resend your response.",
-    "listVendorsResponse": "\n Here are the results that best match your location, products and product quantities.\n1. Andrew’s Farm, Medford MA\n2. Noah’s Farm, Sommerville MA\n3. Keisha’s WholeSale Goods, Framingham MA\n\nREPLY with the vendors number to see more information. \n\n Text EXIT if you would like to quit the service",
-    "choseAndrewFarn": "\n Andrew’s Farm:\nTomatoes 100\nRed Onions 200\nPotatos 30 \nLeeks 20\nPeanuts 500\n\nContact Info\nPhone: 617-123-0000\nEmail: agrossfarm@gmail.com\nLocation: Farmville St, Medford, MA\n\nREPLY 1 if you wish to search a new product. \n\nText EXIT if you are done"
+    "listMatchingVendors": "\n Here are the results that best match your location, products and product quantities.\n1. Andrew’s Farm, Medford MA\n2. Noah’s Farm, Sommerville MA\n3. Keisha’s WholeSale Goods, Framingham MA\n\nREPLY with the vendors number to see more information. \n\n Text EXIT if you would like to quit the service",
+    "choseAndrewFarn": "\n Andrew’s Farm:\nTomatoes 100\nRed Onions 200\nPotatos 30 \nLeeks 20\nPeanuts 500\n\nContact Info\nPhone: 617-123-0000\nEmail: agrossfarm@gmail.com\nLocation: Farmville St, Medford, MA\n",
+    "newSearchOrQuit": "REPLY YES if you wish to search new products. \n\nText EXIT if you are done"
 }
