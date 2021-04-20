@@ -1,0 +1,23 @@
+{
+    "Stores" : {
+      "TestFarm" : {
+        "ContactInfo" : {
+          "Email" : "test@gmail.com",
+          "Location" : {
+            "City" : "Medford",
+            "Country" : "USA",
+            "State" : "MA",
+            "StreetAddress" : "99 Medford St",
+            "Zip" : "02155"
+          },
+          "PhoneNumber" : 9999999999
+        },
+        "Products" : {
+          "TestProduct" : {
+            "Price" : 1,
+            "Quantity" : 0
+          }
+        }
+      }
+    }
+  }
