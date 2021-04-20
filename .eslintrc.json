@@ -23,7 +23,8 @@
             "ignoreTemplateLiterals": false
         }],
         "implicit-arrow-linebreak": "off",
-        "import/extentions": "off",
-        "no-multi-str": "off"
+        "no-multi-str": "off",
+        "import/extensions": "off",
+        "import/no-unresolved": "off"
     }
 }
