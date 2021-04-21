@@ -9,6 +9,7 @@
     "start": "npm run lint && npm run build && node lib/index.js",
     "dev": "nodemon src/index.ts",
     "build": "tsc",
+    "ngrok": "./node_modules/ngrok/bin/ngrok http 4000",
     "lint": "eslint src/*.ts",
     "lint-fix": "eslint src/*.ts --fix",
     "format-check": "prettier --check src/",
