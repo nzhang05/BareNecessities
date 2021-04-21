@@ -22,8 +22,9 @@
             "ignoreStrings": false,
             "ignoreTemplateLiterals": false
         }],
+        "implicit-arrow-linebreak": "off",
+        "no-multi-str": "off",
         "import/extensions": "off",
-        "import/no-unresolved": "off",
-        "implicit-arrow-linebreak": "off"
+        "import/no-unresolved": "off"
     }
 }
