@@ -2,19 +2,19 @@ import messages from './messages.json';
 // eslint-disable-next-line import/extensions
 import { TreeState, MessageObject } from '../types/messages';
 
-const startMessage = (treeState: TreeState): MessageObject =>
+const startMessage = (userInput: string, treeState: TreeState): MessageObject =>
   ({ message: messages.initResponse, treeState });
 
 const checkBuyerVendor = (
-  userInput:string,
+  userInput: string,
   treeState: TreeState,
 ): MessageObject => {
   const newTreeState: TreeState = treeState;
-  if (userInput === 'buyer' || userInput === 'Buyer') {
+  if (userInput === '1' || userInput === 'ONE') {
     newTreeState.userStatus = 'buyer';
     return { message: messages.isBuyerResponse, treeState: newTreeState };
   }
-  if (userInput === 'vendor' || userInput === 'Vendor') {
+  if (userInput === '2' || userInput === 'TWO') {
     newTreeState.userStatus = 'vendor';
     return { message: messages.checkExistingVendor, treeState: newTreeState };
   }
@@ -37,19 +37,23 @@ const getProducts = (
   _userInput: string,
   treeState: TreeState,
 ): MessageObject =>
-// Clean input string
 // Make firebase call to store products list
   ({ message: messages.listMatchingVendors, treeState });
 
 const selectVendor = (
   _userInput: string,
   treeState: TreeState,
-): MessageObject => ({ message: messages.choseAndrewFarn, treeState });
+): MessageObject => ({ message: messages.choseAndrewFarm, treeState });
 
 const searchOrQuit = (
   _userInput: string,
   treeState: TreeState,
 ): MessageObject => ({ message: messages.newSearchOrQuit, treeState });
+
+const exitService = (
+  _userInput: string,
+  treeState: TreeState,
+): MessageObject => ({ message: messages.exit, treeState });
 
 export const buyerMessageTree = [
   startMessage,
@@ -58,6 +62,7 @@ export const buyerMessageTree = [
   getProducts,
   selectVendor,
   searchOrQuit,
+  exitService,
 ];
 
 export const vendorMessageTree = [

@@ -37,7 +37,7 @@ declare module 'express-session' {
 
 // express endpoints
 app.post('/message', (req, res) => {
-  const body = req.body.Body.replace(/[^A-Z0-9]/gi, '').toLowerCase();
+  const body = req.body.Body.replace(/[^A-Z0-9*]/gi, '').toLowerCase();
   const smsCount = req.session.counter || 0;
   const twiml = new MessagingResponse();
   const messageObject = globalTreeState.userStatus === 'buyer'
@@ -52,6 +52,7 @@ app.post('/message', (req, res) => {
     req.session.counter -= 1;
   }
   if (body === 'exit') {
+    messageObject.message = messages.exit;
     req.session.counter = 0;
   }
   if (messageObject.message) {
