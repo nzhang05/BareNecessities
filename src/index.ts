@@ -16,6 +16,7 @@ const app = express();
 let globalTreeState: TreeState = {
   location: '',
   userStatus: 'buyer',
+  storeName: '',
 };
 
 app.use(express.json());

@@ -55,6 +55,21 @@ const exitService = (
   treeState: TreeState,
 ): MessageObject => ({ message: messages.exit, treeState });
 
+const checkExistingVendor = (
+  _userInput: string,
+  treeState: TreeState,
+): MessageObject => ({ message: messages.checkExistingVendor, treeState });
+
+const createNewVendor = (
+  _userInput: string,
+  treeState: TreeState,
+):MessageObject => ({ message: messages.storeRegisteration, treeState });
+
+const showVendorDetailsAndPrompt = (
+  _userInput: string,
+  treeState: TreeState,
+):MessageObject => ({ message: messages.showVendorDetails + messages.showVendorOperations, treeState });
+
 export const buyerMessageTree = [
   startMessage,
   checkBuyerVendor,
@@ -68,4 +83,7 @@ export const buyerMessageTree = [
 export const vendorMessageTree = [
   startMessage,
   checkBuyerVendor,
+  checkExistingVendor,
+  createNewVendor,
+  showVendorDetailsAndPrompt,
 ];
