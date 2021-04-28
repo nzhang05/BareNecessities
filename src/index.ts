@@ -28,9 +28,11 @@ app.use(
 );
 
 if (sessionSecret) {
-  app.use(session({
-    secret: sessionSecret,
-  }));
+  app.use(
+    session({
+      secret: sessionSecret,
+    }),
+  );
 }
 
 declare module 'express-session' {

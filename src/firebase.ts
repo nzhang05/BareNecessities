@@ -94,14 +94,12 @@ export const getStoreZip = async (storeName: string) =>
 export const getVendorsWithProducts = async (product: string) =>
   getStoreNames().then((vendors: string[]) =>
     vendors.filter((vendor) =>
-      getStoreProducts(vendor).then((products) =>
-        product in products)));
+      getStoreProducts(vendor).then((products) => product in products)));
 
 export const getVendorsByZip = async (zip: string) =>
   getStoreNames().then((vendors: string[]) =>
     vendors.filter((vendor) =>
-      getStoreZip(vendor).then((storeZip) =>
-        storeZip === zip)));
+      getStoreZip(vendor).then((storeZip) => storeZip === zip)));
 
 export const createStoreLocation = (
   streetAddress: string,
