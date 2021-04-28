@@ -1,6 +1,5 @@
 {
     "initResponse": "\nWelcome to Bare Necessities! \n\nAre you a buyer or a vendor? \nREPLY 1 (ONE) for buyer \nREPLY 2 (TWO) for vendor \n\nText EXIT if you would like to quit using the service.",
-    "isBuyerResponse": "\nText your zipcode so that we can select vendors based on your location \n\nText EXIT if you would like to quit using the service.",
     "listProductsInstructions": "\nREPLY with a list of the goods and the quantities you wish to purchase. \n\nFor multiple goods, separate each good and its quantity by a period, and seperate each good from its quantity with a comma. Please use the example below as a reference for how to format your message.\n\nExample:\nTomatoes, 15. Potatoes, 50. Rice, 20. \n\nUpon responding, you will receive a list of vendors whose inventory best matches your desired products. \n\nText EXIT if you would like to quit using the service.",
     "vendorListResults": "\nHere are the results that best match your location and products\nREPLY with your selected vendors number to see more information. \n\nText EXIT if you would like to quit using the service.",
     "vendorResultsInstructions": "\nREPLY 1 (ONE) if you wish to search a new product,\nREPLY 2 (TWO) to return back to the list of vendors \n\nText EXIT if you would like to quit the service",
@@ -12,7 +11,8 @@
     "showVendorDetails": "\nHere is the list of product information for your store:",
     "showVendorOperations": "\nHere is the list of operations that you can text to modify your store inventory:\n\nTo ADD a new product,\nREPLY ADD <product name> <quantity> <unit of quantity>\nExample: ADD Tomatoes 30 Kgs\n\nTo EDIT a product's details,\nREPLY EDIT <product name> <quantity> <unit of quantity>\nExample: EDIT Tomatoes 20 Kgs\n\nTo DELETE a product,\nREPLY DELETE <product name>\nExample: DELETE Tomatoes\nREPLY EXIT if you would like to quit the service",
     "unrecognizedResponse": "\nWe could not recognize your input either due to formatting or unrecognized user input. \nPlease resend your response.",
-    "listMatchingVendors": "\nHere are the results that best match your location, products and product quantities:\n\n1. Andrew’s Farm, Medford MA\n2. Noah’s Farm, Sommerville MA\n3. Keisha’s WholeSale Goods, Framingham MA\n\nREPLY with the vendors number to see more information. \n\n Text EXIT if you would like to quit the service",
-    "choseAndrewFarm": "\nAndrew’s Farm:\nTomatoes 100\nRed Onions 200\nPotatos 30 \nLeeks 20\nPeanuts 500\n\nContact Info\nPhone: 617-123-0000\nEmail: agrossfarm@gmail.com\nLocation: Farmville St, Medford, MA\n",
+    "isBuyerResponse": "\nReply with your city or town so that we can select vendors based on your location \n\nText EXIT if you would like to quit using the service.",
+    "registerationName": "\nREPLY with you store, farm or vendor name.",
+    "listMatchingVendors": "\nHere are the results that best match your location, products and product quantities:\n\nREPLY with the vendors number to see more information. \n\nText EXIT if you would like to quit the service \n\nHere are your stores:\n\n",
     "newSearchOrQuit": "REPLY YES if you wish to search new products. \n\nText EXIT if you are done"
 }
