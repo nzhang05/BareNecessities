@@ -16,6 +16,7 @@ const app = express();
 let globalTreeState: TreeState = {
   location: '',
   userStatus: 'buyer',
+  existingVendor: false,
   storeName: '',
 };
 
@@ -27,7 +28,9 @@ app.use(
 );
 
 if (sessionSecret) {
-  app.use(session({ secret: sessionSecret }));
+  app.use(session({ 
+    secret: sessionSecret, 
+  }));
 }
 
 declare module 'express-session' {
