@@ -28,8 +28,8 @@ app.use(
 );
 
 if (sessionSecret) {
-  app.use(session({ 
-    secret: sessionSecret, 
+  app.use(session({
+    secret: sessionSecret,
   }));
 }
 
