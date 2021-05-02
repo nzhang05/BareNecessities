@@ -43,7 +43,8 @@ declare module 'express-session' {
 
 // express endpoints
 app.post('/message', (req, res) => {
-  const body = req.body.Body.replace(/[^A-Z0-9*]/gi, '').toLowerCase();
+  // only want to remove white space front and back
+  const body = req.body.Body.trim().toLowerCase();
   const smsCount = req.session.counter || 0;
   const twiml = new MessagingResponse();
   const messageObject = globalTreeState.userStatus === 'buyer'

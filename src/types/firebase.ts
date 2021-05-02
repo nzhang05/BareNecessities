@@ -1,9 +1,6 @@
 export interface StoreLocation {
   streetAddress: string;
   city: string;
-  state: string;
-  country: string;
-  zip: string;
 }
 
 export interface ContactInfo {
