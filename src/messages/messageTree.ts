@@ -1,6 +1,7 @@
 import messages from './messages.json';
 // eslint-disable-next-line import/extensions
 import { TreeState, MessageObject } from '../types/messages';
+import { Product } from '../types/firebase';
 import * as firebaseLib from '../firebase';
 
 const startMessage = (_userInput: string, treeState: TreeState): MessageObject =>
@@ -79,21 +80,27 @@ const existingVendorCheck = async (storeName: string): Promise<boolean> => {
 }
 
 const getVendorDetailsMessage = async (storeName: string): Promise<string> => {
-  if (storeName) {
-    return firebaseLib.getStoreProducts(storeName).then(products => {
-      // \n<productName> <productQuantity><productUnit>\n[]
-      // [ProductNameKey, {Price, Quantity, Unit}]
-      const productString = Object.entries(products).map(productPair =>
-        `${productPair[0]} ${productPair[1].Quantity}${productPair[1].Unit}\n`)
-      return `\n${productString}`;
+  return firebaseLib.getStoreProducts(storeName).then(products => {
+    // [ProductNameKey, {Price, Quantity, Unit}]
+    const productString = Object.entries(products).map(productPair => {
+      const productName = productPair[0];
+      const productDetails: any = productPair[1];
+      console.log(productString);
+      if (productDetails.Quantity && productDetails.Unit) {
+        // RETURN SHAPE: \n<productName> <productQuantity><productUnit>\n[]
+        return `${productName} ${productDetails.Quantity}${productDetails.Unit}\n`;
+      } else {
+        return `ERROR: No store details found for ${storeName}`;
+      }
     });
-  }
+    return `\n${productString}`;
+  });
 }
 
 const showVendorDetailsOrRegister = (
   userInput: string,
   treeState: TreeState,
-): MessageObject => {
+): Promise<MessageObject> => {
 
   // assuming this data comes in the right order -- TODO: write checks for data 
   // <store name>, <phone>, <email>, <street_address>, <city>
@@ -101,34 +108,49 @@ const showVendorDetailsOrRegister = (
   const newTreeState: TreeState = treeState;
   let responseMessage;
 
-  if (treeState.existingVendor && existingVendorCheck(userInput)) {
-    newTreeState.storeName = userInput;
-    responseMessage = getVendorDetailsMessage(userInput);
-  } else {
-    const detailList = userInput.split(',').map((detail) => detail.trim());
-    if (detailList.length != 5) {
-      // change this to be a message that indicates bad input
-      return { message: messages.unrecognizedResponse, treeState }
-    } else {
-      const storeLocation = firebaseLib.createStoreLocation(detailList[3], detailList[4]);
-      const contactInfo = firebaseLib.createContactInfo(storeLocation, detailList[1], detailList[2]);
-      firebaseLib.createStore(detailList[0], contactInfo).then(success => {
-        if (!success) {
-          return { messages: messages.unrecognizedResponse, treeState }
+  return existingVendorCheck(userInput).then(vendorExists => {
+    if (treeState.existingVendor && vendorExists) {
+      newTreeState.storeName = userInput;
+      return getVendorDetailsMessage(userInput).then(vendorDetailsMessage => {
+        return {
+          message: messages.showVendorDetails
+            + vendorDetailsMessage
+            + messages.showVendorOperations,
+          treeState: newTreeState
         }
       });
+    } else {
+      const detailList = userInput.split(',').map((detail) => detail.trim());
+      
+      if (detailList.length != 5) {
+        return { message: messages.unrecognizedResponse, treeState } // change this to be a message that indicates bad input
+      } else {
+        const storeName = detailList[0];
+        const storePhone = detailList[1];
+        const storeEmail = detailList[2];
+        const storeAddress = detailList[3];
+        const storeCity = detailList[4];
+        const storeLocation = firebaseLib.createStoreLocation(storeAddress, storeCity);
+        const contactInfo = firebaseLib.createContactInfo(storeLocation, storePhone, storeEmail);
+
+        firebaseLib.createStore(storeName, contactInfo).then(success => {
+          if (!success) {
+            return { messages: messages.unrecognizedResponse, treeState }
+          }
+        });
+
+        return getVendorDetailsMessage(userInput).then(vendorDetailsMessage => {
+          return {
+              message: messages.showVendorDetails
+              + vendorDetailsMessage
+              + messages.showVendorOperations,
+            treeState: newTreeState
+          }
+        });
+      }
     }
-    // parse body to create new store
-    // retreive store info
-    // FINAL STRING:  "\n<storeName>:\n<productName> <productQuantity><productUnit>\n[]\n<ContactInfo\nPhone: <contactInfoPhoneNumber>\n<contactInfoEmail>\nLocation: <locationStreetAddress>, <locationCity>"
-    const vendorDetailsMessage = getVendorDetailsMessage()
-    return {
-      message: messages.showVendorDetails
-        + vendorDetailsMessage
-        + messages.showVendorOperations,
-      treeState
-    }
-  };
+  });
+};
 
   export const buyerMessageTree = [
     startMessage,
@@ -144,6 +166,6 @@ const showVendorDetailsOrRegister = (
     startMessage,
     checkBuyerVendor,
     createNewVendor,
-    showVendorDetailsAndPrompt,
+    showVendorDetailsOrRegister,
     exitService
   ];

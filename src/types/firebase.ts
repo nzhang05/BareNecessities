@@ -12,6 +12,7 @@ export interface ContactInfo {
 export interface Product {
   price: number;
   quantity: number;
+  unit?: string;
 }
 
 export interface Store {
