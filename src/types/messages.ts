@@ -3,6 +3,7 @@ export interface TreeState {
   userStatus: string;
   existingVendor: boolean;
   storeName: string;
+  stores: string[];
 }
 
 export interface MessageObject {
