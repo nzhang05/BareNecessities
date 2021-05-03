@@ -133,19 +133,18 @@ const showVendorDetailsOrRegister = (
         const storeLocation = firebaseLib.createStoreLocation(storeAddress, storeCity);
         const contactInfo = firebaseLib.createContactInfo(storeLocation, storePhone, storeEmail);
 
-        firebaseLib.createStore(storeName, contactInfo).then(success => {
+        return firebaseLib.createStore(storeName, contactInfo).then(success => {
           if (!success) {
-            return { messages: messages.unrecognizedResponse, treeState }
+            return { message: messages.unrecognizedResponse, treeState }
           }
-        });
-
-        return getVendorDetailsMessage(userInput).then(vendorDetailsMessage => {
-          return {
-              message: messages.showVendorDetails
-              + vendorDetailsMessage
-              + messages.showVendorOperations,
-            treeState: newTreeState
-          }
+          return getVendorDetailsMessage(userInput).then(vendorDetailsMessage => {
+            return {
+                message: messages.showVendorDetails
+                + vendorDetailsMessage
+                + messages.showVendorOperations,
+              treeState: newTreeState
+            }
+          });
         });
       }
     }
