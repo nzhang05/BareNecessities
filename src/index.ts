@@ -44,7 +44,7 @@ declare module 'express-session' {
 }
 
 // express endpoints
-app.post('/message', (req, res) => {
+app.post('/message', async (req, res) => {
   // only want to remove white space front and back
   const body = req.body.Body.trim().toLowerCase();
   const smsCount = req.session.counter || 0;
