@@ -39,12 +39,6 @@ const storeLocation = async (
   };
 };
 
-const getProducts = (
-  _userInput: string,
-  treeState: TreeState,
-): MessageObject =>
-  ({ message: messages.listMatchingVendors, treeState });
-
 const getTopVendors = async (products: string[]): Promise<string[]> =>
   Promise.all(
     products.map(((product) =>
@@ -219,6 +213,12 @@ const showVendorDetailsOrRegister = (
     });
   });
 };
+
+const exitService = async (
+  _userInput: string,
+  treeState: TreeState,
+): Promise<MessageObject> =>
+  ({ message: messages.exit, treeState });
 
 export const buyerMessageTree = [
   startMessage,
