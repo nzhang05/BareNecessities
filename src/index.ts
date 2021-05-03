@@ -10,6 +10,7 @@ import { TreeState } from './types/messages';
 require('dotenv').config();
 
 // express app
+const buyerRestartSearchLevel = 2;
 const sessionSecret = env.get('SESSION_SECRET').asString();
 const expressServerPort = env.get('PORT').asString();
 const app = express();
@@ -18,6 +19,7 @@ let globalTreeState: TreeState = {
   userStatus: 'buyer',
   existingVendor: false,
   storeName: '',
+  stores: [],
 };
 
 app.use(express.json());
@@ -48,8 +50,8 @@ app.post('/message', (req, res) => {
   const smsCount = req.session.counter || 0;
   const twiml = new MessagingResponse();
   const messageObject = globalTreeState.userStatus === 'buyer'
-    ? buyerMessageTree[smsCount](body, globalTreeState)
-    : vendorMessageTree[smsCount](body, globalTreeState);
+    ? await buyerMessageTree[smsCount](body, globalTreeState)
+    : await vendorMessageTree[smsCount](body, globalTreeState);
 
   globalTreeState = messageObject.treeState;
 
@@ -57,6 +59,9 @@ app.post('/message', (req, res) => {
 
   if (messageObject.message === messages.unrecognizedResponse) {
     req.session.counter -= 1;
+  }
+  if (messageObject.message === messages.newSearch) {
+    req.session.counter = buyerRestartSearchLevel;
   }
   if (body === 'exit') {
     messageObject.message = messages.exit;
