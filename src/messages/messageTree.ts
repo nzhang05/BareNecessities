@@ -1,18 +1,19 @@
+import _ from 'lodash';
 import messages from './messages.json';
-// eslint-disable-next-line import/extensions
 import { TreeState, MessageObject } from '../types/messages';
+import { ContactInfo } from '../types/firebase';
 import * as firebaseLib from '../firebase';
 
-const startMessage = (
+const startMessage = async (
   _userInput: string,
   treeState: TreeState,
-): MessageObject =>
+): Promise<MessageObject> =>
   ({ message: messages.initResponse, treeState });
 
-const checkBuyerVendor = (
+const checkBuyerVendor = async (
   userInput: string,
   treeState: TreeState,
-): MessageObject => {
+): Promise<MessageObject> => {
   const newTreeState: TreeState = treeState;
   if (userInput === '1' || userInput === 'one') {
     newTreeState.userStatus = 'buyer';
@@ -25,11 +26,12 @@ const checkBuyerVendor = (
   return { message: messages.unrecognizedResponse, treeState: newTreeState };
 };
 
-const storeLocation = (
+const storeLocation = async (
   userInput: string,
   treeState: TreeState,
-): MessageObject => {
+): Promise<MessageObject> => {
   const newTreeState: TreeState = treeState;
+
   newTreeState.location = userInput;
   return {
     message: messages.listProductsInstructions,
@@ -43,20 +45,88 @@ const getProducts = (
 ): MessageObject =>
   ({ message: messages.listMatchingVendors, treeState });
 
-const selectVendor = (
-  _userInput: string,
-  treeState: TreeState,
-): MessageObject => ({ message: messages.choseAndrewFarm, treeState });
+const getTopVendors = async (products: string[]): Promise<string[]> =>
+  Promise.all(
+    products.map(((product) =>
+      firebaseLib.getVendorsWithProducts(product).then((stores) =>
+        ({ product, stores })))),
+  ).then((storesByProduct) => {
+    const listOfStoreLists = storesByProduct.map((o) => o.stores);
+    const allStoreMentions = listOfStoreLists.flat();
+    const storeFrequencyMap = _.countBy(allStoreMentions);
 
-const searchOrQuit = (
-  _userInput: string,
-  treeState: TreeState,
-): MessageObject => ({ message: messages.newSearchOrQuit, treeState });
+    // sort the stores by their frequency
+    const mostFrequentStorePairs = Object.entries(storeFrequencyMap)
+      .sort((pair1, pair2) => pair1[1] - pair2[1])
+      .slice(0, 2);
 
-const exitService = (
-  _userInput: string,
+    // return just the store names, not their frequencies
+    return mostFrequentStorePairs.map((p) => p[0]);
+  });
+
+const getVendors = async (
+  userInput: string,
   treeState: TreeState,
-): MessageObject => ({ message: messages.exit, treeState });
+): Promise<MessageObject> => {
+  try {
+    const products = userInput.split(',');
+    const topVendors = await getTopVendors(products);
+    const newTreeState: TreeState = treeState;
+
+    newTreeState.stores = topVendors;
+    return {
+      message: `${messages.listMatchingVendors} ${topVendors.join(' ')}`,
+      treeState: newTreeState,
+    };
+  } catch (error) {
+    return { message: messages.unrecognizedResponse, treeState };
+  }
+};
+
+const formatVendorString = (
+  storeName: string,
+  products: string[],
+  contactInfo: ContactInfo,
+): string => {
+  const storeProductsStr = `${storeName}:\n${products.join(' \n')}`;
+  const contactInfoStr = `Contact Info\nPhone: ${contactInfo.phoneNumber}\n`
+    + `Email: ${contactInfo.email}`;
+  const locationStr = `Location: ${contactInfo.location.streetAddress}, `
+    + `${contactInfo.location.city}, ${contactInfo.location.city}`;
+
+  return `\n ${storeProductsStr} \n\n${contactInfoStr} \n\n${locationStr}\n`;
+};
+
+const selectVendor = async (
+  userInput: string,
+  treeState: TreeState,
+): Promise<MessageObject> => {
+  if (userInput in ['1', '2', '3']) {
+    const store = treeState.stores[Number(userInput) - 1];
+    return firebaseLib.getStoreContactInfo(store).then((contactInfo) =>
+      firebaseLib.getStoreProducts(store).then((products) => {
+        const productNameList = products.keys();
+        return {
+          message: `${formatVendorString(store, productNameList, contactInfo)
+          }\n\n${messages.newSearchOrQuit}`,
+          treeState,
+        };
+      }));
+  }
+  return { message: messages.unrecognizedResponse, treeState };
+};
+
+const searchOrQuit = async (
+  userInput: string,
+  treeState: TreeState,
+): Promise<MessageObject> => {
+  if (userInput === 'yes') {
+    return { message: messages.newSearch, treeState };
+  } if (userInput === 'exit') {
+    return { message: messages.exit, treeState };
+  }
+  return { message: messages.unrecognizedResponse, treeState };
+};
 
 const createNewVendor = (
   userInput: string,
@@ -154,10 +224,9 @@ export const buyerMessageTree = [
   startMessage,
   checkBuyerVendor,
   storeLocation,
-  getProducts,
+  getVendors,
   selectVendor,
   searchOrQuit,
-  exitService,
 ];
 
 export const vendorMessageTree = [
