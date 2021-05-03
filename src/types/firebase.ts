@@ -1,9 +1,6 @@
 export interface StoreLocation {
   streetAddress: string;
   city: string;
-  state: string;
-  country: string;
-  zip: string;
 }
 
 export interface ContactInfo {
@@ -15,6 +12,7 @@ export interface ContactInfo {
 export interface Product {
   price: number;
   quantity: number;
+  unit?: string;
 }
 
 export interface Store {

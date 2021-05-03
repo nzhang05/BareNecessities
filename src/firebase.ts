@@ -85,37 +85,29 @@ export const getStoreContactInfo = async (storeName: string) =>
     .once('value')
     .then((snapshot: any) => snapshot.val());
 
-export const getStoreZip = async (storeName: string) =>
+export const getStoreCity = async (storeName: string) =>
   adminDb
-    .ref(`Stores/${storeName}/ContactInfo/Location/Zip`)
+    .ref(`Stores/${storeName}/ContactInfo/Location/City`)
     .once('value')
     .then((snapshot: any) => snapshot.val());
 
 export const getVendorsWithProducts = async (product: string) =>
   getStoreNames().then((vendors: string[]) =>
     vendors.filter((vendor) =>
-      getStoreProducts(vendor).then((products) =>
-        product in products)));
+      getStoreProducts(vendor).then((products) => product in products)));
 
-export const getVendorsByZip = async (zip: string) =>
+export const getVendorsByCity = async (city: string) =>
   getStoreNames().then((vendors: string[]) =>
     vendors.filter((vendor) =>
-      getStoreZip(vendor).then((storeZip) =>
-        storeZip === zip)));
+      getStoreCity(vendor).then((storeCity) => storeCity === city)));
 
 export const createStoreLocation = (
   streetAddress: string,
   city: string,
-  state: string,
-  country: string,
-  zip: string,
 ): StoreLocation => {
   const storeLocation: StoreLocation = {
     streetAddress,
     city,
-    state,
-    zip,
-    country,
   };
   return storeLocation;
 };
