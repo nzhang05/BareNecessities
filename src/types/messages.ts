@@ -1,6 +1,6 @@
 export interface TreeState {
   location: string;
-  userStatus: string;
+  userStatus: 'buyer' | 'vendor';
   existingVendor: boolean;
   storeName: string;
   stores: string[];
