@@ -6,7 +6,8 @@ import * as env from 'env-var';
 import {
   StoreLocation, ContactInfo, Store, Product,
 } from './types/firebase';
-import serviceAccount from './bare-necessities-60939-firebase-adminsdk-1vgof-20badddf68.json';
+import serviceAccount from
+  './bare-necessities-60939-firebase-adminsdk-1vgof-20badddf68.json';
 
 // firebase client
 const firebaseConfig = {
