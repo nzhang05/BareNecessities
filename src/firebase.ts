@@ -94,7 +94,12 @@ export const getStoreCity = async (storeName: string) =>
 export const getVendorsWithProducts = async (product: string) =>
   getStoreNames().then((vendors: string[]) =>
     vendors.filter((vendor) =>
-      getStoreProducts(vendor).then((products) => product in products)));
+      getStoreProducts(vendor).then((products) => {
+        if (products) {
+          return product in products;
+        }
+        return false;
+      })));
 
 export const getVendorsByCity = async (city: string) =>
   getStoreNames().then((vendors: string[]) =>
