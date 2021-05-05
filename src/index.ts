@@ -63,8 +63,17 @@ app.post('/message', async (req, res) => {
   if (messageObject.message === messages.newSearch) {
     req.session.counter = buyerRestartSearchLevel;
   }
-  if (body === 'exit') {
-    messageObject.message = messages.exit;
+  if (body === 'exit' || messageObject.message === messages.exit) {
+    if (messageObject.message !== messages.exit) {
+      messageObject.message = messages.exit;
+    }
+    globalTreeState = {
+      location: '',
+      userStatus: 'buyer',
+      existingVendor: false,
+      storeName: '',
+      stores: [],
+    };
     req.session.counter = 0;
   }
   if (messageObject.message) {
