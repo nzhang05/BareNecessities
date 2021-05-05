@@ -6,8 +6,7 @@ import * as env from 'env-var';
 import {
   StoreLocation, ContactInfo, Store, Product,
 } from './types/firebase';
-import serviceAccount from
-  './bare-necessities-60939-firebase-adminsdk-1vgof-20badddf68.json';
+import serviceAccount from './bare-necessities-60939-firebase-adminsdk-1vgof-20badddf68.json';
 
 // firebase client
 const firebaseConfig = {
@@ -75,19 +74,19 @@ export const getStoreNames = async () =>
 
 export const getStoreProducts = async (storeName: string) =>
   adminDb
-    .ref(`Stores/${storeName}/Products`)
+    .ref(`Stores/${storeName}/products`)
     .once('value')
     .then((snapshot: any) => snapshot.val());
 
 export const getStoreContactInfo = async (storeName: string) =>
   adminDb
-    .ref(`Stores/${storeName}/ContactInfo`)
+    .ref(`Stores/${storeName}/contactInfo`)
     .once('value')
     .then((snapshot: any) => snapshot.val());
 
 export const getStoreCity = async (storeName: string) =>
   adminDb
-    .ref(`Stores/${storeName}/ContactInfo/Location/City`)
+    .ref(`Stores/${storeName}/contactInfo/location/city`)
     .once('value')
     .then((snapshot: any) => snapshot.val());
 
@@ -144,8 +143,19 @@ export const addProductToStore = async (
   storeName: string,
   productName: string,
   product: Product,
-): Promise<boolean> => adminDb
-  .ref(`Stores/${storeName}/${productName}`)
-  .set(product)
-  .then(() => true)
-  .catch(() => false);
+): Promise<boolean> =>
+  adminDb
+    .ref(`Stores/${storeName}/products/${productName}`)
+    .set(product)
+    .then(() => true)
+    .catch(() => false);
+
+export const deleteProductFromStore = async (
+  storeName: string,
+  productName: string,
+): Promise<boolean> =>
+  adminDb
+    .ref(`Stores/${storeName}/products/${productName}`)
+    .remove()
+    .then(() => true)
+    .catch(() => false);
