@@ -52,7 +52,7 @@ const getTopVendors = async (products: string[]): Promise<string[]> =>
     // sort the stores by their frequency
     const mostFrequentStorePairs = Object.entries(storeFrequencyMap)
       .sort((pair1, pair2) => pair1[1] - pair2[1])
-      .slice(0, 2);
+      .slice(0, 3);
 
     // return just the store names, not their frequencies
     return mostFrequentStorePairs.map((p) => p[0]);
