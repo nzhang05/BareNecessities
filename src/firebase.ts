@@ -75,31 +75,38 @@ export const getStoreNames = async () =>
 
 export const getStoreProducts = async (storeName: string) =>
   adminDb
-    .ref(`Stores/${storeName}/Products`)
+    .ref(`Stores/${storeName}/products`)
     .once('value')
     .then((snapshot: any) => snapshot.val());
 
 export const getStoreContactInfo = async (storeName: string) =>
   adminDb
-    .ref(`Stores/${storeName}/ContactInfo`)
+    .ref(`Stores/${storeName}/contactInfo`)
     .once('value')
     .then((snapshot: any) => snapshot.val());
 
 export const getStoreCity = async (storeName: string) =>
   adminDb
-    .ref(`Stores/${storeName}/ContactInfo/Location/City`)
+    .ref(`Stores/${storeName}/contactInfo/location/city`)
     .once('value')
     .then((snapshot: any) => snapshot.val());
 
 export const getVendorsWithProducts = async (product: string) =>
-  getStoreNames().then((vendors: string[]) =>
-    vendors.filter((vendor) =>
-      getStoreProducts(vendor).then((products) => {
-        if (products) {
-          return product in products;
-        }
-        return false;
-      })));
+  getStoreNames().then((vendors: string[]) => Promise.all(
+    vendors.map(async (vendor) => {
+      const storeHasProduct = await getStoreProducts(vendor)
+        .then((products) => {
+          if (products) {
+            return product in products;
+          }
+          return false;
+        });
+      return { vendor, storeHasProduct };
+    }),
+  ).then((filterCriteria) =>
+    filterCriteria
+      .filter((query) => query.storeHasProduct)
+      .map((query) => query.vendor)));
 
 export const getVendorsByCity = async (city: string) =>
   getStoreNames().then((vendors: string[]) =>
