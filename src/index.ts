@@ -4,7 +4,7 @@ import session from 'express-session';
 import MessagingResponse from 'twilio/lib/twiml/MessagingResponse';
 import * as env from 'env-var';
 import messages from './messages/messages.json';
-import { buyerMessageTree, vendorMessageTree } from './messages/messageTree';
+import { buyerMessageTree } from './messages/messageTree';
 import { TreeState } from './types/messages';
 
 require('dotenv').config();
@@ -13,12 +13,6 @@ require('dotenv').config();
 const sessionSecret = env.get('SESSION_SECRET').asString();
 const expressServerPort = env.get('PORT').asString();
 const app = express();
-let globalTreeState: TreeState = {
-  location: '',
-  userStatus: 'buyer',
-  existingVendor: false,
-  storeName: '',
-};
 
 app.use(express.json());
 app.use(
@@ -38,8 +32,22 @@ if (sessionSecret) {
 declare module 'express-session' {
   export interface Session {
     counter: number;
+    globalTreeState: TreeState;
   }
 }
+
+app.use((req, res, next) => {
+  if (!req.session.globalTreeState) {
+    req.session.globalTreeState = {
+      location: '',
+      product: '',
+      storeName: '',
+      storeData: [],
+    };
+  }
+
+  next();
+});
 
 // express endpoints
 app.post('/message', (req, res) => {
@@ -47,11 +55,12 @@ app.post('/message', (req, res) => {
   const body = req.body.Body.trim().toLowerCase();
   const smsCount = req.session.counter || 0;
   const twiml = new MessagingResponse();
-  const messageObject = globalTreeState.userStatus === 'buyer'
-    ? buyerMessageTree[smsCount](body, globalTreeState)
-    : vendorMessageTree[smsCount](body, globalTreeState);
+  const messageObject = buyerMessageTree[smsCount](
+    body,
+    req.session.globalTreeState,
+  );
 
-  globalTreeState = messageObject.treeState;
+  req.session.globalTreeState = messageObject.treeState;
 
   req.session.counter = smsCount + 1;
 
