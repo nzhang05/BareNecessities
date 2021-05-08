@@ -36,7 +36,7 @@ declare module 'express-session' {
   }
 }
 
-app.use((req, res, next) => {
+app.use((req, _res, next) => {
   if (!req.session.globalTreeState) {
     req.session.globalTreeState = {
       location: '',
