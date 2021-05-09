@@ -1,7 +1,10 @@
 {
-    "initResponse": "\nWelcome to Bare Necessities, a service that connects buyers to wholesale farmers.\n\nREPLY SEARCH, <product name>, <town/city> to search for products near you.\n\nExample: SEARCH, passion fruit, Embu\n\nREPLY EXIT if you would like to quit the service",
-    "searchResultsResponse":"Here is a list of farmers with your desired product:\n1.Tamizan Nathoo, colored cherry tomatoes, Gigiri, Nairobi, Kenya\n2.Samuel Makori, tomatoes, Kayole Spine Rd, Nairobi, Kenya",
-    "vendorListResults": "\nHere are the results that best match your location and products\nREPLY with your selected vendors number to see more information. \n\nText EXIT if you would like to quit using the service.",
+    "initResponse": "\nWelcome to Bare Necessities, a service that connects buyers to wholesale farmers.\n\nReply SEARCH <product name>, <town/city> to search for products near you.\n\nExample: SEARCH passion fruit, Eldoret\n\nReply EXIT, if you would like to quit the service.",
+    "searchResultsResponse":"Here is a list of farmers with your desired product:\n",
+    "noVendorsFound": "There were no farmers found selling your desired product.\nReply NEW to search a different product.",
+    "searchResultsInstructions": "Reply MORE <farmer number> if you would like to see more details from this farmer.\nExample: MORE 1\n\nReply BACK, if you would like to return to the previous step.\nReply EXIT, if you would like to quit using the service.",
+    "vendorListResults": "\nHere are the results that best match your location and products\nReply with your selected farmers number to see more information. \n\nText EXIT, if you would like to quit using the service.",
     "exit": "\nThank you for using Bare Necessities! We hope you enjoyed using our service.",
     "unrecognizedResponse": "\nWe could not recognize your input either due to formatting or unrecognized user input. \nPlease resend your response.",
+    "resetMessage": "Reply NEW, if you would like to search a new product.\nReply BACK, if you would like to return to the previous step.\nReply EXIT, if you would like to quit the service."
 }
