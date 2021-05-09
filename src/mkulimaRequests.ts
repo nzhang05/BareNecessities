@@ -1,6 +1,6 @@
 import axios from 'axios';
 import _ from 'lodash';
-import { Creator, StoreData } from './types/messages';
+import { Creator, StoreData, ProductDetails } from './types/messages';
 
 const createCreator = (): Creator => ({
   id: 0,
@@ -21,12 +21,21 @@ const createStoreData = (): StoreData => ({
   creator: createCreator(),
 });
 
-export const getFarmerInfo = () => {};
+export const getFarmerInfo = (
+  farmerId: number,
+): Promise<ProductDetails[]> => axios
+  .get(`https://www.mkulimayoung.com/account/items?created_by=${farmerId}`)
+  .then((res) =>
+    res.data.data.data.map((item: any) => {
+      const parsedItem = _.pick(item, Object.keys(createStoreData()));
+      delete parsedItem.creator;
+      return parsedItem;
+    }));
 
 export const getFarmersWithProduct = (
   product: string,
   locality: string,
-) => axios
+): Promise<StoreData[]> => axios
   .get('https://www.mkulimayoung.com/account/items'
       + `?q=${product}&locality=${locality}`)
   .then((res) => res.data.data.data.map((item: any) => {
