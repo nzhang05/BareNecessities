@@ -42,6 +42,7 @@ app.use((req, _res, next) => {
       product: '',
       storeName: '',
       storeData: [],
+      enumeratedVendors: [],
       counter: 0,
       counterDelta: 0,
     };
