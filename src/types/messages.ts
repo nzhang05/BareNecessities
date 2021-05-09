@@ -4,27 +4,31 @@ export interface Creator {
   first_name: string;
   // eslint-disable-next-line camelcase
   last_name: string;
+  // eslint-disable-next-line camelcase
+  full_names: string;
   phone: string;
   email: string;
   // eslint-disable-next-line camelcase
   farm_distance: string;
 }
 
-export interface StoreData {
+export interface ProductDetails {
   id: number;
   title: string;
   description: string;
   price: number;
   currency: string;
   locality: string;
-  creator: Creator;
 }
+
+export type StoreData = ProductDetails & { creator: Creator }
 
 export interface TreeState {
   location: string;
   product: string;
   storeName: string;
   storeData: StoreData[];
+  enumeratedVendors: string[];
   counter: number;
   counterDelta: 0 | -1 | -2 | -3;
 }
