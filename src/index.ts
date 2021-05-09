@@ -31,7 +31,6 @@ if (sessionSecret) {
 
 declare module 'express-session' {
   export interface Session {
-    counter: number;
     globalTreeState: TreeState;
   }
 }
@@ -43,6 +42,8 @@ app.use((req, _res, next) => {
       product: '',
       storeName: '',
       storeData: [],
+      counter: 0,
+      counterDelta: 0,
     };
   }
 
@@ -50,27 +51,37 @@ app.use((req, _res, next) => {
 });
 
 // express endpoints
-app.post('/message', (req, res) => {
-  // only want to remove white space front and back
+app.post('/message', async (req, res) => {
   const body = req.body.Body.trim().toLowerCase();
-  const smsCount = req.session.counter || 0;
+  const smsCount = req.session.globalTreeState.counter || 0;
   const twiml = new MessagingResponse();
-  const messageObject = buyerMessageTree[smsCount](
+  const messageObject = await buyerMessageTree[smsCount](
     body,
     req.session.globalTreeState,
   );
 
   req.session.globalTreeState = messageObject.treeState;
 
-  req.session.counter = smsCount + 1;
+  req.session.globalTreeState.counter = smsCount + 1;
 
-  if (messageObject.message === messages.unrecognizedResponse) {
-    req.session.counter -= 1;
+  // new case
+  if (req.session.globalTreeState.counterDelta === -3) {
+    req.session.globalTreeState.counter -= 3;
+    req.session.globalTreeState.counterDelta = 0;
+  // back case
+  } else if (req.session.globalTreeState.counterDelta === -2) {
+    req.session.globalTreeState.counter -= 2;
+    req.session.globalTreeState.counterDelta = 0;
+  // unrecognized or error case
+  } else if (req.session.globalTreeState.counterDelta === -1) {
+    req.session.globalTreeState.counter -= 1;
+    req.session.globalTreeState.counterDelta = 0;
+  // exit case
+  } else if (messageObject.message === messages.exit) {
+    req.session.globalTreeState.counter = 0;
+    req.session.globalTreeState.counterDelta = 0;
   }
-  if (body === 'exit') {
-    messageObject.message = messages.exit;
-    req.session.counter = 0;
-  }
+
   if (messageObject.message) {
     twiml.message(messageObject.message);
   }
