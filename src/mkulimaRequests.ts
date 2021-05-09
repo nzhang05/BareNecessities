@@ -6,6 +6,7 @@ const createCreator = (): Creator => ({
   id: 0,
   first_name: '',
   last_name: '',
+  full_names: '',
   phone: '',
   email: '',
   farm_distance: '',
